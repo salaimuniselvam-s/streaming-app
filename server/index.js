@@ -7,7 +7,9 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
+const commonRoutes = require("./routes/common");
 const adminRoutes = require("./routes/admin");
+const customerRoutes = require("./routes/customer");
 
 const app = express();
 const port = process.env.PORT || 3002;
@@ -26,7 +28,9 @@ app.get("/", async (req, res) => {
   res.send("Welcome to C Stream Server..");
 });
 
-app.use("/", authRoutes, adminRoutes);
+app.use("/", authRoutes, commonRoutes);
+app.use("/admin", adminRoutes);
+app.use("/customer", customerRoutes);
 
 console.log("Connecting To MongoDb...");
 

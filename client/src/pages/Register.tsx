@@ -1,15 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { RegisterType } from "../types";
-import { notification } from "antd";
+import { RegisterType, planType } from "../types";
+import { notification, Select } from "antd";
 import { registerUser } from "../actions/auth";
 import { AxiosError } from "axios";
 import Loader from "../components/Loader";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { setAuthCookies, setUserDetails } from "../utils/cookies";
+import { getAllPlans } from "../actions/admin";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("User Name is required"),
@@ -19,14 +20,20 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Confirm Password is required"),
+  plan: Yup.string().required("Plan is required"),
 });
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
+  const { data: plans } = useQuery<planType[]>("plans", async () => {
+    return await getAllPlans();
+  });
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -103,6 +110,26 @@ const Register: React.FC = () => {
           {errors.confirmPassword && (
             <p className="text-red-500">{errors.confirmPassword.message}</p>
           )}
+        </div>
+        <div>
+          <label> Choose Plan</label>
+          <Controller
+            name="plan"
+            control={control}
+            render={({ field }) => (
+              <Select
+                className="border w-full rounded-lg border-black"
+                {...field}
+              >
+                {plans?.map((plan) => (
+                  <Select.Option value={plan.title} key={plan._id}>
+                    {plan.title} - {plan.price}
+                  </Select.Option>
+                ))}
+              </Select>
+            )}
+          />
+          <p className="mx-2 text-red-600">{errors.plan?.message}</p>
         </div>
         <button className="bg-blue-500 w-full hover:bg-blue-700 text-white mt-2 p-2 rounded-lg">
           {isLoading ? <Loader /> : "Register"}

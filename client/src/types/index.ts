@@ -5,6 +5,7 @@ export interface LoginType {
 
 export interface RegisterType extends LoginType {
   confirmPassword: string;
+  plan: string;
 }
 
 export interface movieType {

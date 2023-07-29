@@ -7,7 +7,6 @@ const {
 const {
   UploadVideo,
   getAllMovies,
-  getAllPlans,
   addNewPlan,
   removePlan,
   updatePlansByMovieId,
@@ -23,8 +22,6 @@ router.get("/delete-movies", async (req, res) => {
   await Movies.deleteMany();
   res.send("deleted");
 });
-
-router.get("/get-all-plans", authenticateJWT, authenicateAdmin, getAllPlans);
 
 router.post("/add-new-plans", authenticateJWT, authenicateAdmin, addNewPlan);
 

@@ -86,7 +86,7 @@ const RegisterAdmin = async (req, res) => {
 
 // Register Customer
 const RegisterCustomer = async (req, res) => {
-  const { username, password, confirmPassword } = req.body;
+  const { username, password, confirmPassword, plan } = req.body;
   if (password !== confirmPassword) {
     return res.status(400).json("Passwords do not match");
   }
@@ -100,6 +100,8 @@ const RegisterCustomer = async (req, res) => {
       username,
       password: hashPassword(password, salt),
       role,
+      plan,
+      favourites: [],
     });
     await customer.save();
     const { accessToken, refreshToken } = generateTokens(username, role);

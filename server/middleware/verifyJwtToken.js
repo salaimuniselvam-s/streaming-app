@@ -37,7 +37,7 @@ const authenicateAdmin = (req, res, next) => {
   if (user.role === "admin") {
     next();
   } else {
-    return res.status(400).send("You are not authorized to upload videos");
+    return res.status(400).send("Unauthorized");
   }
 };
 

@@ -16,6 +16,7 @@ router.post("/register-customer", RegisterCustomer);
 router.post("/refreshToken", RefreshToken);
 router.delete("/logout", Logout);
 
+// for testing purpose - need to delete the route later
 router.get("/delete-users", async (req, res) => {
   await UserDetails.deleteMany();
   res.send("deleted");

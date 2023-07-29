@@ -5,17 +5,18 @@ const { PlanDetails } = require("../model/planModel");
  * @description Upload Videos to the server
  */
 const UploadVideo = async (req, res) => {
+  const { title, description, imgUrl, srcUrl, plans } = req.body;
   try {
-    const isExistMovie = await Movies.findOne({ title: req.body.title });
+    const isExistMovie = await Movies.findOne({ title });
     if (isExistMovie) {
       return res.status(409).json("Movie already exists");
     }
     const movie = new Movies({
-      title: req.body.title,
-      description: req.body.description,
-      imgUrl: req.body.imgUrl,
-      srcUrl: req.body.srcUrl,
-      plans: req.body.plans,
+      title,
+      description,
+      imgUrl,
+      srcUrl,
+      plans,
     });
     await movie.save();
     res.status(200).json("Video uploaded successfully");
@@ -43,17 +44,18 @@ const getAllPlans = async (req, res) => {
 };
 
 const addNewPlan = async (req, res) => {
+  const { title, price } = req.body;
   try {
     const isPlanExist = await PlanDetails.findOne({
-      title: req.body.title,
+      title,
     });
     if (isPlanExist) {
       return res.status(409).json("Plan already exists");
     }
 
     const plans = new PlanDetails({
-      title: req.body.title,
-      price: req.body.price,
+      title,
+      price,
     });
     await plans.save();
     return res.status(200).json(plans);

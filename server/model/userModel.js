@@ -14,6 +14,16 @@ const userDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // it doesn't to need to be added for admin user
+  // later need to have different model for admin
+  plan: {
+    type: String,
+  },
+  favourites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+  ],
 });
 
 const tokenSchema = new mongoose.Schema({

@@ -114,7 +114,7 @@ const UploadForm = ({ closeModal }: { closeModal: () => void }) => {
           )}
         </div>
         <div>
-          <label className="plans"> Add To</label>
+          <label> Add To</label>
           <Controller
             name="plans"
             control={control}
