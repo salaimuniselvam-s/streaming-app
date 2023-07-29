@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+input {
+  background-color: #080a1a;
+  color: #ffffff;
+}
