@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// Define a schema for a userDetails
+// schema for a userDetails
 const userDetailsSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -23,7 +23,6 @@ const tokenSchema = new mongoose.Schema({
   },
 });
 
-// Create a model for the user details schema
 const UserDetails = mongoose.model("UserDetails", userDetailsSchema);
 const TokenSchema = mongoose.model("Tokens", tokenSchema);
 

@@ -1,8 +1,7 @@
-const { TokenSchema } = require("../model/model");
+const { TokenSchema } = require("../model/userModel");
 const { hashPassword, comparePassword } = require("./hashPassword");
 require("dotenv").config();
 const salt = process.env.SAMPLE_SALT;
-console.log(salt, "dsfsdf");
 
 function saveRefreshToken(refreshToken) {
   const tokenDetails = new TokenSchema({

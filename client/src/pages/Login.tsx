@@ -58,7 +58,7 @@ const Login: React.FC = () => {
 
   return (
     <form
-      className="height-widgets w-full 2xl:text-2xl grid place-content-center"
+      className="w-full 2xl:text-2xl grid place-content-center"
       onSubmit={handleSubmit((data) => mutateAsync(data as LoginType))}
     >
       {contextHolder}

@@ -32,6 +32,24 @@ const authenticateJWT = (req, res, next) => {
   }
 };
 
+const authenicateAdmin = (req, res, next) => {
+  let user = req.user;
+  if (user.role === "admin") {
+    next();
+  } else {
+    return res.status(400).send("You are not authorized to upload videos");
+  }
+};
+
+const authenicateCustomer = (req, res, next) => {
+  let user = req.user;
+  if (user.role === "customer") {
+    next();
+  } else {
+    return res.status(400).send("You are not authorized to upload videos");
+  }
+};
+
 /**
  * @description Generates a new accessToken
  */
@@ -52,4 +70,10 @@ const generateTokens = (username, role) => {
   return { accessToken, refreshToken };
 };
 
-module.exports = { generateAccessToken, authenticateJWT, generateTokens };
+module.exports = {
+  generateAccessToken,
+  authenticateJWT,
+  generateTokens,
+  authenicateAdmin,
+  authenicateCustomer,
+};

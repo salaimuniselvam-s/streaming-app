@@ -12,7 +12,7 @@ import { API_BASE_URL } from "../utils/constants";
 const refreshToken = async () => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/auth/refreshToken`,
+      `${API_BASE_URL}/refreshToken`,
       {
         token: getAuthCookies().refreshToken,
       },

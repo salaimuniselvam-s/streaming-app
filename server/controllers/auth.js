@@ -3,7 +3,7 @@ const {
   generateAccessToken,
   generateTokens,
 } = require("../middleware/verifyJwtToken");
-const { UserDetails } = require("../model/model");
+const { UserDetails } = require("../model/userModel");
 const { comparePassword, hashPassword } = require("../utils/hashPassword");
 const { compareRefreshToken, deleteRefreshToken } = require("../utils/utils");
 require("dotenv").config();

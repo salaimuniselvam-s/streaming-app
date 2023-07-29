@@ -6,7 +6,7 @@ const {
   RegisterAdmin,
   RegisterCustomer,
 } = require("../controllers/auth.js");
-const { UserDetails } = require("../model/model.js");
+const { UserDetails } = require("../model/userModel.js");
 
 const router = express.Router();
 

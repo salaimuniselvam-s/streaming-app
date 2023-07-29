@@ -16,7 +16,7 @@ export const logoutUser = async () => {
 export const registerUser = async (registerData: RegisterType) => {
   // admin registration url ---? /register-admin
   const response = await axios.post(
-    `${API_BASE_URL}/register-customer`,
+    `${API_BASE_URL}/register-admin`,
     registerData
   );
   return response.data;
