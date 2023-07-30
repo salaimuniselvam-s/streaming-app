@@ -57,7 +57,7 @@ const UserDetails: React.FC = () => {
     },
     {
       label: (
-        <div className="grid place-content-center">
+        <div className="float-right">
           <button
             onClick={() => mutateAsync()}
             className="px-3 py-1 rounded-lg bg-red-600 text-white"
