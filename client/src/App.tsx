@@ -13,9 +13,9 @@ const HomeWithAuth = withAuth(Home);
 function App() {
   return (
     <AnimatePresence mode="wait">
-      <div className="w-screen max-w-1600 mx-auto min-h-screen flex flex-col ">
+      <div className="w-screen max-w-1600 mx-auto flex flex-col ">
         <Header />
-        <main className="mt-14  md:mt-20 px-4 md:px-16 py-4 w-full">
+        <main className="px-4 md:px-16 py-4 w-full mt-24">
           <Suspense fallback={<Loader />}>
             <Routes>
               <Route path="/*" element={<Login />} />

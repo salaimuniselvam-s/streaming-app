@@ -38,6 +38,9 @@ export default {
         350: "350px",
         620: "620px",
       },
+      minHeight: {
+        center: "calc(100vh - 192px)",
+      },
       maxWidth: {
         1600: "1600px",
       },

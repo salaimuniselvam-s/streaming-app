@@ -80,47 +80,26 @@ const UploadForm = ({ closeModal }: { closeModal: () => void }) => {
             <p className="text-red-500">{errors.title.message}</p>
           )}
         </div>
-        <div className="mt-2">
+        <div className="mt-3">
           <label className="font-semibold">Description</label>
           <textarea
-            placeholder="Oppenheimer (/ˈɒpənˌhaɪmər/ OP-ən-HY-mər) is a 2023 biographical thriller film written and directed by Christopher Nolan...."
-            className="border mt-1 focus:outline-none border-gray-400 rounded-lg p-2 w-full"
+            placeholder="Oppenheimer is a 2023 biographical thriller film written and directed by Christopher Nolan...."
+            className="border mt-1 focus:outline-none border-gray-400 rounded-lg p-2 h-20 w-full"
             {...register("description")}
           />
           {errors.description && (
             <p className="text-red-500">{errors.description.message}</p>
           )}
         </div>
-        <div>
-          <label className="font-semibold">Image Url</label>
-          <input
-            placeholder="https://upload.wikimedia.org/wikipedia/en/4/4a/Oppenheimer_%28film%29.jpg"
-            className="border focus:outline-none border-gray-400 mt-1  rounded-lg p-2 w-full"
-            {...register("imgUrl")}
-          />
-          {errors.imgUrl && (
-            <p className="text-red-500">{errors.imgUrl.message}</p>
-          )}
-        </div>
-        <div>
-          <label className="font-semibold">Video Url</label>
-          <input
-            placeholder="https://www.youtube.com/watch?v=uYPbbksJxIg"
-            className="border focus:outline-none border-gray-400 mt-1  rounded-lg p-2 w-full"
-            {...register("srcUrl")}
-          />
-          {errors.srcUrl && (
-            <p className="text-red-500">{errors.srcUrl.message}</p>
-          )}
-        </div>
-        <div>
-          <label> Add To</label>
+        <div className="mt-3">
+          <label className="font-semibold"> Add Video To Plans</label>
           <Controller
             name="plans"
             control={control}
             render={({ field }) => (
               <Select
-                className="border w-full  m-2 p-2 rounded-lg border-black"
+                size="large"
+                className="w-full border  rounded-lg border-gray-400 mt-1"
                 {...field}
                 mode="multiple"
               >
@@ -134,7 +113,30 @@ const UploadForm = ({ closeModal }: { closeModal: () => void }) => {
           />
           <p className="mx-2 text-red-600">{errors.plans?.message}</p>
         </div>
-        <button className="bg-blue-500 mt-2 w-full hover:bg-blue-700 text-white p-2 rounded-lg">
+        <div className="mt-3">
+          <label className="font-semibold">Image Url</label>
+          <input
+            placeholder="https://upload.wikimedia.org/wikipedia/en/4/4a/Oppenheimer_%28film%29.jpg"
+            className="border focus:outline-none border-gray-400 mt-1  rounded-lg p-2 w-full"
+            {...register("imgUrl")}
+          />
+          {errors.imgUrl && (
+            <p className="text-red-500">{errors.imgUrl.message}</p>
+          )}
+        </div>
+        <div className="mt-3">
+          <label className="font-semibold">Video Url</label>
+          <input
+            placeholder="https://www.youtube.com/watch?v=uYPbbksJxIg"
+            className="border focus:outline-none border-gray-400 mt-1  rounded-lg p-2 w-full"
+            {...register("srcUrl")}
+          />
+          {errors.srcUrl && (
+            <p className="text-red-500">{errors.srcUrl.message}</p>
+          )}
+        </div>
+
+        <button className="bg-blue-500 mt-3 w-full hover:bg-blue-700 text-white p-2 rounded-lg">
           {isLoading ? <Loader /> : "Upload Video"}
         </button>
       </div>

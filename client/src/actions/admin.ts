@@ -17,6 +17,13 @@ export const getAllMovies = async () => {
   return response.data;
 };
 
+export const deleteMovieById = async (id: string) => {
+  const response = await axiosInstance.delete(
+    `${API_BASE_URL}/admin/delete-movie/${id}`
+  );
+  return response.data;
+};
+
 export const updatePlansByMovieId = async (id: string, plan: string[]) => {
   const response = await axiosInstance.put(
     `${API_BASE_URL}/admin/update-movie-plans/${id}`,

@@ -2,8 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-body,
-input {
+body {
   background-color: #080a1a;
   color: #ffffff;
+}
+
+/* override */
+.ant-btn-primary {
+  background-color: #1677ff;
+}
+.override .ant-select-selector,
+.override input {
+  background: #080a1a !important;
+  color: #ffffff !important;
+}
+
+.override .ant-select-arrow {
+  color: #ffffff !important;
 }

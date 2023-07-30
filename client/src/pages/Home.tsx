@@ -1,18 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import AdminControls from "../components/AdminControls";
 import {
+  deleteMovieById,
   getAllMovies,
   getAllPlans,
   updatePlansByMovieId,
 } from "../actions/admin";
 import React, { useState } from "react";
-import { MdShoppingBasket } from "react-icons/md";
+import { AiFillYoutube, AiOutlineDelete } from "react-icons/ai";
+import { BiEdit } from "react-icons/bi";
 import { motion } from "framer-motion";
-import { Card, Modal, Select, Tooltip } from "antd";
+import { Card, Modal, Popconfirm, Select, Tooltip } from "antd";
 import { movieType, planType } from "../types";
 import Loader from "../components/Loader";
 import YouTubePlayer from "../components/YoutubePlayer";
 import { AxiosError } from "axios";
+import { tailwindCssConstant } from "../utils/css";
 
 const { Meta } = Card;
 
@@ -42,19 +45,29 @@ const Home: React.FC = () => {
     }
   );
 
+  const { mutateAsync: deleteMovie } = useMutation(deleteMovieById, {
+    onSuccess() {
+      queryClient.invalidateQueries("movies");
+    },
+    onError(error) {
+      const err = error as AxiosError;
+      console.error(err);
+    },
+  });
+
   const openVideoModal = (movie: movieType) => {
     setMovie(movie);
     setVideoModal(true);
   };
   const closeVideoModal = () => setVideoModal(false);
 
-  const closePlanModal = () => setPlanModal(false);
-
   const openPlanModal = (movie: movieType) => {
     setUpdatePlans(movie.plans);
     setPlanModal(true);
     setMovie(movie);
   };
+
+  const closePlanModal = () => setPlanModal(false);
 
   const updatePlanValues = (plans: string[]) => {
     setUpdatePlans(plans);
@@ -65,17 +78,22 @@ const Home: React.FC = () => {
     setPlanModal(false);
   };
 
+  const onDeleteMovie = (id: string) => {
+    deleteMovie(id);
+  };
+
   return (
     <div>
+      {/* for showing the actions managed by the admin */}
       <AdminControls />
 
       {isLoading && (
-        <div className="grid place-content-center mt-32">
+        <div className="grid  place-content-center mt-32">
           <Loader />
         </div>
       )}
 
-      <section className="flex flex-wrap gap-12 my-9 ">
+      <section className="flex flex-wrap items-center md:items-start flex-col md:flex-row gap-12 mt-6 ">
         {!isLoading &&
           movies?.map((movie) => {
             return (
@@ -86,32 +104,88 @@ const Home: React.FC = () => {
                 cover={
                   <img
                     alt={movie.title}
-                    className="w-full h-full object-cover rounded-md"
+                    className="w-full object-cover rounded-md"
                     src={movie.imgUrl}
                   />
                 }
               >
                 <div>
-                  <Meta title={movie.title} />
-                  <p className="pt-2">{movie.description.slice(0, 100)}...</p>
+                  <Meta
+                    className="capitalize text-lg font-semibold"
+                    title={
+                      <p className="flex justify-between items-center">
+                        {movie.title}
+                        <Tooltip placement="bottom" title="Delete Movie">
+                          <Popconfirm
+                            title="Delete Movie"
+                            description={
+                              <p>
+                                Are you sure to delete
+                                {
+                                  <span className="capitalize font-semibold ml-1">
+                                    {movie.title}
+                                  </span>
+                                }
+                                ?
+                              </p>
+                            }
+                            onConfirm={() => onDeleteMovie(movie._id!)}
+                            onCancel={() => {}}
+                            okText="Yes"
+                            cancelText="No"
+                          >
+                            <AiOutlineDelete
+                              size={18}
+                              className="text-red-600 ml-2 cursor-pointer"
+                            />
+                          </Popconfirm>
+                        </Tooltip>
+                      </p>
+                    }
+                  />
+                  <p className="pt-2">
+                    {movie.description.length > 130 ? (
+                      <Tooltip
+                        title={movie.description}
+                        placement="bottomRight"
+                      >
+                        {movie.description.slice(0, 130)}...
+                      </Tooltip>
+                    ) : (
+                      <span>{movie.description.slice(0, 130)}...</span>
+                    )}
+                  </p>
                 </div>
-                <div className="py-2 flex justify-between">
+                <div>
+                  <h3 className="mt-2 font-semibold sm:text-base">Plans</h3>
+                  <p>
+                    {movie.plans.map((plan) => (
+                      <span
+                        key={plan}
+                        className="inline-flex items-center mr-2 my-1 px-3 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 capitalize"
+                      >
+                        {plan}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+                <div className="mt-2 py-2 flex items-center justify-between">
                   <button
-                    className="px-2 bg-red-500 text-white rounded-md"
+                    className={tailwindCssConstant.redButton()}
                     onClick={() => openVideoModal(movie)}
                   >
+                    <AiFillYoutube size={24} className="mr-2" />
                     Watch Video
                   </button>
 
-                  <Tooltip title="Modify Plan">
+                  <Tooltip title="Add or Remove Movies From Plans">
                     <motion.div
                       whileTap={{ scale: 0.75 }}
                       onClick={() => openPlanModal(movie)}
-                      className={`w-8 h-8 rounded-full ${
-                        isLoading ? "bg-red-600" : "bg-green-600"
-                      } flex items-center transition-all 100s ease-in-out justify-center cursor-pointer hover:shadow-md mt-2`}
+                      className={`w-10 h-10 rounded-full bg-green-600
+                       flex items-center transition-all 100s ease-in-out justify-center cursor-pointer hover:shadow-md`}
                     >
-                      <MdShoppingBasket className="text-white" />
+                      <BiEdit size={18} className="text-white" />
                     </motion.div>
                   </Tooltip>
                 </div>
@@ -120,7 +194,7 @@ const Home: React.FC = () => {
           })}
       </section>
       <Modal
-        title="Upload Modal"
+        title={<p className="font-bold">Upload Modal</p>}
         open={videoModal}
         onOk={closeVideoModal}
         onCancel={closeVideoModal}
@@ -130,7 +204,12 @@ const Home: React.FC = () => {
       </Modal>
 
       <Modal
-        title="Modify Plan Modal"
+        title={
+          <p className="font-bold flex items-center gap-2">
+            <BiEdit size={18} />
+            Add/Remove Movies From Plans
+          </p>
+        }
         open={planModal}
         onOk={confirmPlanModal}
         onCancel={closePlanModal}
@@ -158,7 +237,8 @@ const PlanSelected = ({
   return (
     <div>
       <Select
-        className="border z-10 w-full  m-2 p-2 rounded-lg border-black"
+        className="border z-10 rounded-lg border-gray-200 w-full my-6"
+        size="large"
         mode="multiple"
         onChange={(e) => setUpdatePlans(e)}
         getPopupContainer={(triggerNode) => triggerNode.parentElement}

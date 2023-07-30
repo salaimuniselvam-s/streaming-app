@@ -34,6 +34,26 @@ const getAllMovies = async (req, res) => {
   }
 };
 
+const deleteMovieById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Find the movie by ID and remove it from the database
+    const deletedMovie = await Movies.findByIdAndRemove(id);
+
+    if (!deletedMovie) {
+      return res.status(404).json("Movie not found");
+    }
+
+    return res
+      .status(200)
+      .json(`${deletedMovie.title} Movie deleted successfully`);
+  } catch (err) {
+    console.error("Error deleting movie:", err);
+    return res.status(500).json("Internal server error");
+  }
+};
+
 const getAllPlans = async (req, res) => {
   try {
     const plans = await PlanDetails.find();
@@ -103,6 +123,7 @@ const removePlan = async (req, res) => {
 module.exports = {
   UploadVideo,
   getAllMovies,
+  deleteMovieById,
   getAllPlans,
   addNewPlan,
   removePlan,

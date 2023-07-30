@@ -49,7 +49,13 @@ const Login = async (req, res) => {
       refreshToken,
     });
   } else {
-    res.status(401).send("User Not Found.Please Register");
+    res
+      .status(401)
+      .send(
+        !role
+          ? "User Not Found.Please Register"
+          : "Username or password  is incorrect!"
+      );
   }
 };
 

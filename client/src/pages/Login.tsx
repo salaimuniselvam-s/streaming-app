@@ -58,14 +58,16 @@ const Login: React.FC = () => {
 
   return (
     <form
-      className="w-full 2xl:text-2xl grid place-content-center"
+      className="w-full override grid place-content-center min-h-center"
       onSubmit={handleSubmit((data) => mutateAsync(data as LoginType))}
     >
       {contextHolder}
-      <div className="bg-card shadow shadow-gray-500  px-12 py-6 rounded-2xl">
-        <h1 className="text-center font-bold pt-2 pb-6">Welcome To C Stream</h1>
+      <div className="bg-card shadow shadow-gray-500  px-12 py-6 rounded-2xl max-w-lg">
+        <h1 className="text-center font-semibold text-2xl italic pt-2 pb-6">
+          Welcome To C Stream
+        </h1>
         <div>
-          <label className="font-semibold">User Name</label>
+          <label>User Name</label>
           <input
             placeholder="salai muni selvam"
             className="border focus:outline-none border-gray-400 mt-1  rounded-lg p-2 w-full"
@@ -75,8 +77,8 @@ const Login: React.FC = () => {
             <p className="text-red-500">{errors.username.message}</p>
           )}
         </div>
-        <div className="mt-2">
-          <label className="font-semibold">Password</label>
+        <div className="mt-3">
+          <label>Password</label>
           <input
             placeholder="********"
             className="border mt-1 focus:outline-none border-gray-400 rounded-lg p-2 w-full"
@@ -87,14 +89,14 @@ const Login: React.FC = () => {
             <p className="text-red-500">{errors.password.message}</p>
           )}
         </div>
-        <button className="bg-blue-500 mt-2 w-full hover:bg-blue-700 text-white p-2 rounded-lg">
+        <button className="bg-blue-500 mt-3 w-full hover:bg-blue-700 text-white p-2 rounded-lg">
           {isLoading ? <Loader /> : "Login"}
         </button>
         <p className="float-right text-sm mt-3">
           New User?
           <span
             onClick={() => navigate("/register")}
-            className="px-2 font-semibold text-blue-700 cursor-pointer"
+            className="px-2 font-semibold text-blue-500 cursor-pointer"
           >
             Register Here
           </span>
