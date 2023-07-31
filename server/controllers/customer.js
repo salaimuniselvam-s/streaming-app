@@ -68,9 +68,87 @@ const getFavouriteMoviesForCustomer = async (req, res) => {
   }
 };
 
+// friends group
+// Get all friends for a particular user
+const getAllFriends = async (req, res) => {
+  try {
+    const username = req.params.username;
+    const [user] = await UserDetails.find({ username });
+    if (!user) {
+      return res.status(404).json("User not found");
+    }
+
+    res.json(user.friends || []);
+  } catch (error) {
+    res.status(500).json("Server Error");
+  }
+};
+
+// Add a friend for a particular user
+const addFriend = async (req, res) => {
+  try {
+    const username = req.params.username;
+    const [user] = await UserDetails.find({ username });
+    if (!user) {
+      return res.status(404).json("User not found");
+    }
+
+    const { friends } = req.body;
+    if (!friends) {
+      return res.status(400).json("Please provide all friend details");
+    }
+
+    user.friends.push(...friends);
+    await user.save();
+
+    res.json(user.friends);
+  } catch (error) {
+    res.status(500).json("Server Error");
+  }
+};
+
+// Remove a friend for a particular user
+const removeFriend = async (req, res) => {
+  try {
+    const username = req.params.username;
+    const [user] = await UserDetails.find({ username });
+    if (!user) {
+      return res.status(404).json("User not found");
+    }
+
+    const friendId = req.params.friendId;
+    user.friends = user.friends.filter(
+      (friend) => friend.toString() !== friendId
+    );
+    await user.save();
+
+    res.json(user.friends || []);
+  } catch (error) {
+    res.status(500).json("Server Error");
+  }
+};
+
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await UserDetails.find(
+      { role: { $ne: "admin" } },
+      { username: 1, _id: 0 }
+    );
+    res.json(
+      users.filter((user) => user.username).map((user) => user.username)
+    );
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 module.exports = {
   getAllMoviesByCustomerPlan,
   addToFavouriteMovieForCustomer,
   removeFromFavouriteMovieForCustomer,
   getFavouriteMoviesForCustomer,
+  removeFriend,
+  addFriend,
+  getAllFriends,
+  getAllUsers,
 };

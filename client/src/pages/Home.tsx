@@ -8,7 +8,7 @@ import {
 } from "../actions/admin";
 import React, { useState } from "react";
 import { AiFillYoutube, AiOutlineDelete } from "react-icons/ai";
-import { BiEdit } from "react-icons/bi";
+import { BiEdit, BiMoviePlay } from "react-icons/bi";
 import { motion } from "framer-motion";
 import { Card, Modal, Popconfirm, Select, Tooltip } from "antd";
 import { movieType, planType } from "../types";
@@ -194,11 +194,17 @@ const Home: React.FC = () => {
           })}
       </section>
       <Modal
-        title={<p className="font-bold">Upload Modal</p>}
+        title={
+          <p className="font-bold text-2xl capitalize mb-3 flex  items-center">
+            <BiMoviePlay className="mr-1" />
+            {movie?.title}
+          </p>
+        }
         open={videoModal}
         onOk={closeVideoModal}
         onCancel={closeVideoModal}
         footer={null}
+        destroyOnClose={true}
       >
         <YouTubePlayer videoId={`${movie?.srcUrl}`} />
       </Modal>

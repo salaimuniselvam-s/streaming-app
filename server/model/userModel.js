@@ -24,6 +24,11 @@ const userDetailsSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
     },
   ],
+  friends: [
+    {
+      type: String,
+    },
+  ],
 });
 
 const tokenSchema = new mongoose.Schema({

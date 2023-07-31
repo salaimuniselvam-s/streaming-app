@@ -22,3 +22,7 @@ export interface planType {
   price: number;
   _id?: string;
 }
+
+export interface YouTubePlayerProps {
+  videoId: string;
+}

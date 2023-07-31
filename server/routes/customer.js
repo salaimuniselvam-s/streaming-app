@@ -8,6 +8,10 @@ const {
   addToFavouriteMovieForCustomer,
   removeFromFavouriteMovieForCustomer,
   getFavouriteMoviesForCustomer,
+  removeFriend,
+  addFriend,
+  getAllFriends,
+  getAllUsers,
 } = require("../controllers/customer");
 
 const router = express.Router();
@@ -38,4 +42,33 @@ router.get(
   authenicateCustomer,
   getFavouriteMoviesForCustomer
 );
+
+router.get(
+  "/:username/get-all-friends",
+  authenticateJWT,
+  authenicateCustomer,
+  getAllFriends
+);
+
+router.post(
+  "/:username/add-friends",
+  authenticateJWT,
+  authenicateCustomer,
+  addFriend
+);
+
+router.delete(
+  "/:username/delete-friend/:friendId",
+  authenticateJWT,
+  authenicateCustomer,
+  removeFriend
+);
+
+router.get(
+  "/get-all-customers",
+  authenticateJWT,
+  authenicateCustomer,
+  getAllUsers
+);
+
 module.exports = router;

@@ -7,32 +7,41 @@ import {
   removeFromFavouriteMovie,
 } from "../actions/customer";
 import { movieType } from "../types";
+import { GiThreeFriends } from "react-icons/gi";
 import { AiFillYoutube, AiFillHeart } from "react-icons/ai";
+import { BiMoviePlay } from "react-icons/bi";
 import { motion } from "framer-motion";
 import { Card, Tooltip, Modal } from "antd";
 import Loader from "../components/Loader";
 import { AxiosError } from "axios";
 import { tailwindCssConstant } from "../utils/css";
 import YouTubePlayer from "../components/YoutubePlayer";
+import FriendsGroup from "../components/FriendsGroup";
 
 const { Meta } = Card;
 
 const CustomerHome: React.FC = () => {
   const queryClient = useQueryClient();
   const [favouriteModal, setFavouriteModal] = useState(false);
+  const [friendsModal, setFriendsModal] = useState(false);
   const [videoModal, setVideoModal] = useState(false);
   const [movie, setMovie] = useState<movieType | null>(null);
+
+  // get all movies for the customer plan
   const { data: movies, isLoading } = useQuery<movieType[]>(
     "movies",
     async () => {
       return await getAllMoviesForCustomer();
     }
   );
+
+  // get all favourite movies of the customer
   const { data: favouriteMovies, isLoading: isFavouriteMoviesLoading } =
     useQuery<string[]>("favourite-movies", async () => {
       return await getFavouriteMoviesForCustomer();
     });
 
+  // add to favourite movies
   const { mutateAsync: addToFavourite } = useMutation(addToFavouriteMovie, {
     onSuccess() {
       queryClient.invalidateQueries("favourite-movies");
@@ -43,6 +52,7 @@ const CustomerHome: React.FC = () => {
     },
   });
 
+  // remove movie from favourite movies list
   const { mutateAsync: removeFromFavourite } = useMutation(
     removeFromFavouriteMovie,
     {
@@ -68,11 +78,23 @@ const CustomerHome: React.FC = () => {
     setMovie(movie);
     setVideoModal(true);
   };
+
   const closeVideoModal = () => setVideoModal(false);
+
+  const openFriendsModal = () => {
+    setFriendsModal(true);
+  };
 
   return (
     <div>
-      <div className="grid place-content-end">
+      <div className="flex justify-end gap-6">
+        <button
+          onClick={openFriendsModal}
+          className={tailwindCssConstant.blueButton()}
+        >
+          <GiThreeFriends className="w-3.5 h-3.5 mr-2" />
+          Friends Group
+        </button>
         <button
           onClick={() => setFavouriteModal(true)}
           className={tailwindCssConstant.blueButton()}
@@ -152,15 +174,23 @@ const CustomerHome: React.FC = () => {
             );
           })}
       </section>
+      {/* Watch Video Modal */}
       <Modal
-        title={<p className="font-bold">Upload Modal</p>}
+        title={
+          <p className="font-bold text-2xl capitalize mb-3 flex  items-center">
+            <BiMoviePlay className="mr-1" />
+            {movie?.title}
+          </p>
+        }
         open={videoModal}
         onOk={closeVideoModal}
         onCancel={closeVideoModal}
         footer={null}
+        destroyOnClose={true}
       >
         <YouTubePlayer videoId={`${movie?.srcUrl}`} />
       </Modal>
+      {/* Favourite Movies List Modal */}
       <Modal
         title={
           <p className="font-bold flex items-center gap-1">
@@ -216,6 +246,21 @@ const CustomerHome: React.FC = () => {
                 );
               })}
         </div>
+      </Modal>
+      {/* Friends Group Modal  */}
+      <Modal
+        title={
+          <p className="font-bold flex items-center gap-1">
+            <GiThreeFriends className="w-3.5 h-3.5 mr-2" />
+            Friends Group
+          </p>
+        }
+        open={friendsModal}
+        onOk={() => setFriendsModal(false)}
+        onCancel={() => setFriendsModal(false)}
+        footer={null}
+      >
+        <FriendsGroup />
       </Modal>
     </div>
   );
