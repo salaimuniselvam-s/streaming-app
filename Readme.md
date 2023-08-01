@@ -84,9 +84,9 @@ All the below routes have to be prefixed with BASE_URL in the .env file (By defa
 
 ##### **Common Routes**
 
--**GET /admin/get-all-plans** - Retrieves all subscription plans available in the system for customers, which is used in customer registration.
+-**GET /admin/get-all-plans** - Retrieves all subscription plans available in the system for customers to choose when they register.
 
-Admin and Customer Routes are Protected by Jwt Tokens.
+**Note: Admin and Customer Routes are Protected by Jwt Tokens.**
 
 ##### **Admin Routes**
 
