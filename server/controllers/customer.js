@@ -78,7 +78,7 @@ const getAllFriends = async (req, res) => {
       return res.status(404).json("User not found");
     }
 
-    res.json(user.friends || []);
+    res.json(user.friends.filter((friend) => friend !== username) || []);
   } catch (error) {
     res.status(500).json("Server Error");
   }

@@ -99,10 +99,10 @@ npm run start
 ## Application Flow
 
 - Register an admin
-- Add plans the customer using Update Plan Button on top of the admin home page
+- Add plans to the customer using Update Plan Button on top of the admin home page
 - Upload Videos to the C Stream through Upload Video Button
 - Register a Customer
-- Now you can watch the movies uploaded by the Admin for your plan and also you can add movies to your Favourites List.
+- Now you can watch the movies uploaded by the Admin for your plan and also you can add movies to your Favourites List & You can Create a Friend Group.
 
 ## Preview
 
@@ -110,7 +110,7 @@ Check out the preview of the C Stream (CODIIS Stream) application by following t
 
 This video provides a visual walkthrough of the application, showcasing its features and user interface. Download & Watch the preview to get a glimpse of what C Stream (CODIIS Stream) has to offer.
 
-## Technologies Used
+## Packages Used
 
 ### C Stream Client Application
 
@@ -145,5 +145,6 @@ C Stream Server is built using the following technologies:
 - **jsonwebtoken**: A library for generating and verifying JSON Web Tokens (JWT) for authentication purposes.
 - **mongoose**: An Object Data Modeling (ODM) library for MongoDB, simplifying database interactions in Node.js applications.
 - **morgan**: Middleware for logging HTTP request details in Express applications.
+- **node-fetch**: It's a lightweight library that brings the fetch function to Node.js environments.
 
 These technologies were chosen to create a robust, efficient server for c stream application

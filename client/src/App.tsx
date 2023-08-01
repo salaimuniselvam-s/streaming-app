@@ -4,11 +4,11 @@ import { Suspense } from "react";
 import Loader from "./components/Loader";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Home from "./pages/Home";
+import AdminHome from "./pages/AdminHome";
 import { withAuth } from "./components/Auth";
 import { AnimatePresence } from "framer-motion";
 
-const HomeWithAuth = withAuth(Home);
+const HomeWithAuth = withAuth(AdminHome);
 
 function App() {
   return (

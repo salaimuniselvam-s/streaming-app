@@ -1,6 +1,6 @@
-const Loader = () => {
+const Loader = ({ restStyles }: { restStyles?: string }) => {
   return (
-    <div className="grid place-items-center">
+    <div className={`grid place-items-center ${restStyles ? restStyles : ""}`}>
       <div
         className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
         role="status"

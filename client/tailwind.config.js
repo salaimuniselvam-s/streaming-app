@@ -40,6 +40,8 @@ export default {
       },
       minHeight: {
         center: "calc(100vh - 192px)",
+        100: "100px",
+        48: "48px",
       },
       maxWidth: {
         1600: "1600px",

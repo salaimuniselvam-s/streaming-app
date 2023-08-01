@@ -25,7 +25,7 @@ const CustomerHome: React.FC = () => {
   const [favouriteModal, setFavouriteModal] = useState(false);
   const [friendsModal, setFriendsModal] = useState(false);
   const [videoModal, setVideoModal] = useState(false);
-  const [movie, setMovie] = useState<movieType | null>(null);
+  const [Movie, setMovie] = useState<movieType | null>(null);
 
   // get all movies for the customer plan
   const { data: movies, isLoading } = useQuery<movieType[]>(
@@ -42,20 +42,8 @@ const CustomerHome: React.FC = () => {
     });
 
   // add to favourite movies
-  const { mutateAsync: addToFavourite } = useMutation(addToFavouriteMovie, {
-    onSuccess() {
-      queryClient.invalidateQueries("favourite-movies");
-    },
-    onError(error) {
-      const err = error as AxiosError;
-      console.error(err);
-    },
-  });
-
-  // remove movie from favourite movies list
-  const { mutateAsync: removeFromFavourite } = useMutation(
-    removeFromFavouriteMovie,
-    {
+  const { mutateAsync: addToFavourite, isLoading: isAddToFavouriteLoading } =
+    useMutation(addToFavouriteMovie, {
       onSuccess() {
         queryClient.invalidateQueries("favourite-movies");
       },
@@ -63,10 +51,30 @@ const CustomerHome: React.FC = () => {
         const err = error as AxiosError;
         console.error(err);
       },
-    }
-  );
+      onSettled() {
+        setMovie(null);
+      },
+    });
+
+  // remove movie from favourite movies list
+  const {
+    mutateAsync: removeFromFavourite,
+    isLoading: isRemoveFromFavouriteLoading,
+  } = useMutation(removeFromFavouriteMovie, {
+    onSuccess() {
+      queryClient.invalidateQueries("favourite-movies");
+    },
+    onError(error) {
+      const err = error as AxiosError;
+      console.error(err);
+    },
+    onSettled() {
+      setMovie(null);
+    },
+  });
 
   const addOrRemoveMovie = (movie: movieType) => {
+    setMovie(movie);
     if (favouriteMovies?.includes(movie._id!)) {
       removeFromFavourite(movie._id!);
     } else {
@@ -120,12 +128,12 @@ const CustomerHome: React.FC = () => {
                 cover={
                   <img
                     alt={movie.title}
-                    className="w-full object-cover rounded-md"
+                    className="w-full h-60 object-center object-cover rounded-md"
                     src={movie.imgUrl}
                   />
                 }
               >
-                <div>
+                <div className="min-h-100">
                   <Meta title={movie.title} />
                   <p className="pt-2">
                     {movie.description.length > 130 ? (
@@ -136,7 +144,7 @@ const CustomerHome: React.FC = () => {
                         {movie.description.slice(0, 130)}...
                       </Tooltip>
                     ) : (
-                      <span>{movie.description.slice(0, 130)}...</span>
+                      <span>{movie.description}</span>
                     )}
                   </p>
                 </div>
@@ -166,7 +174,13 @@ const CustomerHome: React.FC = () => {
                       }
                        flex items-center transition-all 100s ease-in-out justify-center cursor-pointer hover:shadow-md`}
                     >
-                      <AiFillHeart size={18} className="text-white" />
+                      {(isAddToFavouriteLoading ||
+                        isRemoveFromFavouriteLoading) &&
+                      movie._id === Movie!._id ? (
+                        <Loader restStyles="text-white w-8" />
+                      ) : (
+                        <AiFillHeart size={18} className="text-white" />
+                      )}
                     </motion.div>
                   </Tooltip>
                 </div>
@@ -179,7 +193,7 @@ const CustomerHome: React.FC = () => {
         title={
           <p className="font-bold text-2xl capitalize mb-3 flex  items-center">
             <BiMoviePlay className="mr-1" />
-            {movie?.title}
+            {Movie?.title}
           </p>
         }
         open={videoModal}
@@ -188,7 +202,7 @@ const CustomerHome: React.FC = () => {
         footer={null}
         destroyOnClose={true}
       >
-        <YouTubePlayer videoId={`${movie?.srcUrl}`} />
+        <YouTubePlayer videoId={`${Movie?.srcUrl}`} />
       </Modal>
       {/* Favourite Movies List Modal */}
       <Modal

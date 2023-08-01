@@ -4,7 +4,8 @@
   "description": "server for codiss stream application",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "registerUsers": "node ./utils/registerUsers.mjs"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "node-fetch": "^3.3.2"
   }
 }

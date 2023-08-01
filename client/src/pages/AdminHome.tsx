@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { AiFillYoutube, AiOutlineDelete } from "react-icons/ai";
 import { BiEdit, BiMoviePlay } from "react-icons/bi";
 import { motion } from "framer-motion";
-import { Card, Modal, Popconfirm, Select, Tooltip } from "antd";
+import { Card, Modal, Popconfirm, Select, Tooltip, notification } from "antd";
 import { movieType, planType } from "../types";
 import Loader from "../components/Loader";
 import YouTubePlayer from "../components/YoutubePlayer";
@@ -19,8 +19,9 @@ import { tailwindCssConstant } from "../utils/css";
 
 const { Meta } = Card;
 
-const Home: React.FC = () => {
+const AdminHome: React.FC = () => {
   const queryClient = useQueryClient();
+  const [api, contextHolder] = notification.useNotification();
   const [videoModal, setVideoModal] = useState(false);
   const [movie, setMovie] = useState<movieType | null>(null);
   const [planModal, setPlanModal] = useState(false);
@@ -32,14 +33,33 @@ const Home: React.FC = () => {
       return await getAllMovies();
     }
   );
+
+  const openNotification = (uploadSuccess: boolean, message: string) => {
+    if (uploadSuccess) {
+      api.success({
+        message,
+        placement: "topRight",
+        duration: 2,
+      });
+    } else {
+      api.error({
+        message,
+        placement: "topRight",
+        duration: 2,
+      });
+    }
+  };
+
   const { mutateAsync: updatePlan } = useMutation(
     () => updatePlansByMovieId(`${movie?._id}`, updatePlans),
     {
       onSuccess() {
         queryClient.invalidateQueries("movies");
+        openNotification(true, `Plan Updated Successfully.`);
       },
       onError(error) {
         const err = error as AxiosError;
+        openNotification(false, `Updating Plan Failed.Please Try Again.`);
         console.error(err);
       },
     }
@@ -48,10 +68,12 @@ const Home: React.FC = () => {
   const { mutateAsync: deleteMovie } = useMutation(deleteMovieById, {
     onSuccess() {
       queryClient.invalidateQueries("movies");
+      openNotification(true, `Deleted Successfully.`);
     },
     onError(error) {
       const err = error as AxiosError;
       console.error(err);
+      openNotification(false, `Deletion Failed.Please try again..`);
     },
   });
 
@@ -84,6 +106,7 @@ const Home: React.FC = () => {
 
   return (
     <div>
+      {contextHolder}
       {/* for showing the actions managed by the admin */}
       <AdminControls />
 
@@ -104,12 +127,12 @@ const Home: React.FC = () => {
                 cover={
                   <img
                     alt={movie.title}
-                    className="w-full object-cover rounded-md"
+                    className="w-full h-60 object-center object-cover rounded-md"
                     src={movie.imgUrl}
                   />
                 }
               >
-                <div>
+                <div className="min-h-100">
                   <Meta
                     className="capitalize text-lg font-semibold"
                     title={
@@ -152,13 +175,13 @@ const Home: React.FC = () => {
                         {movie.description.slice(0, 130)}...
                       </Tooltip>
                     ) : (
-                      <span>{movie.description.slice(0, 130)}...</span>
+                      <span>{movie.description}</span>
                     )}
                   </p>
                 </div>
                 <div>
                   <h3 className="mt-2 font-semibold sm:text-base">Plans</h3>
-                  <p>
+                  <p className="min-h-48 max-h-12 overflow-y-auto">
                     {movie.plans.map((plan) => (
                       <span
                         key={plan}
@@ -260,4 +283,4 @@ const PlanSelected = ({
   );
 };
 
-export default Home;
+export default AdminHome;
