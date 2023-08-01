@@ -175,7 +175,9 @@ const FriendsGroup: React.FC = () => {
                 className="w-full border  rounded-lg border-gray-400 mt-1"
               >
                 {customers
-                  ?.filter((data) => !friends?.includes(data))
+                  ?.filter(
+                    (data) => !friends?.includes(data) && data !== username
+                  )
                   ?.map((user) => (
                     <Select.Option
                       className="capitalize font-semibold text-xl"

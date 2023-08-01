@@ -1,5 +1,4 @@
 const express = require("express");
-const { Movies } = require("../model/moviesModel");
 const {
   authenticateJWT,
   authenicateAdmin,
