@@ -93,6 +93,10 @@ const CustomerHome: React.FC = () => {
     setFriendsModal(true);
   };
 
+  const favouriteMoviesList = movies?.filter((movie) =>
+    favouriteMovies?.includes(movie._id!)
+  );
+
   return (
     <div>
       <div className="flex justify-end gap-6">
@@ -112,7 +116,7 @@ const CustomerHome: React.FC = () => {
         </button>
       </div>
       {isLoading && (
-        <div className="grid  place-content-center mt-32">
+        <div className="grid  place-content-center my-24">
           <Loader />
         </div>
       )}
@@ -174,6 +178,7 @@ const CustomerHome: React.FC = () => {
                       }
                        flex items-center transition-all 100s ease-in-out justify-center cursor-pointer hover:shadow-md`}
                     >
+                      {/* loader for favourites  */}
                       {(isAddToFavouriteLoading ||
                         isRemoveFromFavouriteLoading) &&
                       movie._id === Movie!._id ? (
@@ -219,46 +224,50 @@ const CustomerHome: React.FC = () => {
       >
         <div className="my-6">
           {isLoading && (
-            <div className="grid  place-content-center mt-32">
+            <div className="grid  place-content-center my-6">
               <Loader />
             </div>
           )}
           {/* show only favourite movies of the user */}
           {(!isLoading || !isFavouriteMoviesLoading) &&
-            movies
-              ?.filter((movie) => favouriteMovies?.includes(movie._id!))
-              ?.map((movie) => {
-                return (
-                  <div
-                    className="border border-gray-400 shadow rounded-lg px-3 py-2 my-2 flex justify-between items-center"
-                    key={movie._id}
-                  >
-                    <p className="capitalize font-semibold">{movie.title}</p>
-                    <p className="flex gap-3 items-center">
-                      <Tooltip title={`Watch ${movie.title}`}>
-                        <AiFillYoutube
-                          size={30}
-                          onClick={() => openVideoModal(movie)}
-                          className="text-red-500 cursor-pointer"
-                        />
-                      </Tooltip>
-                      <Tooltip
-                        title={
-                          favouriteMovies?.includes(movie._id!)
-                            ? "Remove From Favourite"
-                            : "Add To Favourite"
-                        }
-                      >
-                        <AiFillHeart
-                          onClick={() => addOrRemoveMovie(movie)}
-                          size={24}
-                          className="text-rose-400 cursor-pointer"
-                        />
-                      </Tooltip>
-                    </p>
-                  </div>
-                );
-              })}
+          favouriteMoviesList?.length === 0 ? (
+            <div className="text-center my-6 font-semibold">
+              No Favourite Movies Found.
+            </div>
+          ) : (
+            favouriteMoviesList?.map((movie) => {
+              return (
+                <div
+                  className="border border-gray-400 shadow rounded-lg px-3 py-2 my-2 flex justify-between items-center"
+                  key={movie._id}
+                >
+                  <p className="capitalize font-semibold">{movie.title}</p>
+                  <p className="flex gap-3 items-center">
+                    <Tooltip title={`Watch ${movie.title}`}>
+                      <AiFillYoutube
+                        size={30}
+                        onClick={() => openVideoModal(movie)}
+                        className="text-red-500 cursor-pointer"
+                      />
+                    </Tooltip>
+                    <Tooltip
+                      title={
+                        favouriteMovies?.includes(movie._id!)
+                          ? "Remove From Favourite"
+                          : "Add To Favourite"
+                      }
+                    >
+                      <AiFillHeart
+                        onClick={() => addOrRemoveMovie(movie)}
+                        size={24}
+                        className="text-rose-400 cursor-pointer"
+                      />
+                    </Tooltip>
+                  </p>
+                </div>
+              );
+            })
+          )}
         </div>
       </Modal>
       {/* Friends Group Modal  */}

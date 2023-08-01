@@ -102,7 +102,7 @@ const FriendsGroup: React.FC = () => {
             Your Friends
           </h1>
           {isLoading && (
-            <div className="grid  place-content-center mt-32">
+            <div className="grid  place-content-center my-6">
               <Loader />
             </div>
           )}
@@ -160,7 +160,7 @@ const FriendsGroup: React.FC = () => {
             Add New Friend
           </h1>
           {isCustomerLoading ? (
-            <div className="grid  place-content-center mt-32">
+            <div className="grid  place-content-center my-6">
               <Loader />
             </div>
           ) : (

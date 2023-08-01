@@ -43,15 +43,12 @@ const requestOptions = {
 // registering admin
 async function registerUsers() {
   credentials.forEach((user) => {
-    console.log(user);
     if (user.role == "admin") {
-      console.log({ user }, BASE_URL);
       fetch(`${BASE_URL}/register-admin`, {
         ...requestOptions,
         body: JSON.stringify(user),
       })
         .then((response) => {
-          console.log(response);
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }

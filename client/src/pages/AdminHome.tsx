@@ -111,7 +111,7 @@ const AdminHome: React.FC = () => {
       <AdminControls />
 
       {isLoading && (
-        <div className="grid  place-content-center mt-32">
+        <div className="grid  place-content-center my-24">
           <Loader />
         </div>
       )}
