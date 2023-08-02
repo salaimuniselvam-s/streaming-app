@@ -127,7 +127,7 @@ const AdminHome: React.FC = () => {
                 cover={
                   <img
                     alt={movie.title}
-                    className="w-full h-60 object-center object-cover rounded-md"
+                    className="w-full object-center h-60 object-cover rounded-md"
                     src={movie.imgUrl}
                   />
                 }
