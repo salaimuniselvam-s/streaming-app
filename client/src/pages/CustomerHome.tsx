@@ -132,6 +132,7 @@ const CustomerHome: React.FC = () => {
                 cover={
                   <img
                     alt={movie.title}
+                    style={{ height: "240px" }}
                     className="w-full h-60 object-center object-cover rounded-md"
                     src={movie.imgUrl}
                   />
